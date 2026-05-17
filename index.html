@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,7 +7,7 @@
     <title>Karrar Mohammed — Social Media Specialist & Content Creator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Tajawal:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -49,7 +50,7 @@
         top: 0;
         left: 0;
         pointer-events: none;
-        z-index: 9999;
+        z-index: 100000;
         transition: transform 0.15s ease;
         mix-blend-mode: normal;
       }
@@ -62,7 +63,7 @@
         top: 0;
         left: 0;
         pointer-events: none;
-        z-index: 9998;
+        z-index: 99999;
         transition: all 0.3s ease;
       }
       .cursor.hovered {
@@ -169,25 +170,85 @@
         position: relative;
         overflow: hidden;
       }
-      .hero-bg-text {
+
+      /* ── Stars canvas ── */
+      #heroCanvas {
         position: absolute;
-        right: -20px;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── Nebula glow behind image ── */
+      .hero-nebula {
+        position: absolute;
+        right: 0;
         top: 50%;
         transform: translateY(-50%);
-        font-family: "Bebas Neue", sans-serif;
-        font-size: clamp(120px, 18vw, 280px);
-        color: rgba(255, 255, 255, 0.04);
-        line-height: 0.85;
+        width: 650px;
+        height: 650px;
+        border-radius: 50%;
+        background: radial-gradient(
+          ellipse at 60% 40%,
+          rgba(100, 60, 180, 0.18) 0%,
+          rgba(169, 129, 243, 0.08) 35%,
+          rgba(30, 10, 80, 0.04) 65%,
+          transparent 80%
+        );
         pointer-events: none;
-        user-select: none;
-        letter-spacing: -5px;
+        animation: nebulaDrift 10s ease-in-out infinite;
+        filter: blur(8px);
       }
-      .hero-label {
-        font-size: 11px;
-        letter-spacing: 4px;
+      @keyframes nebulaDrift {
+        0%,
+        100% {
+          transform: translateY(-50%) scale(1);
+          opacity: 0.8;
+        }
+        50% {
+          transform: translateY(-52%) scale(1.06);
+          opacity: 1;
+        }
+      }
+
+      /* ── Available badge ── */
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 10px;
+        letter-spacing: 3px;
         text-transform: uppercase;
         color: var(--orange);
-        margin-bottom: 24px;
+        margin-bottom: 28px;
+        position: relative;
+        z-index: 1;
+        opacity: 0;
+        transform: translateY(12px);
+        animation: heroFadeUp 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+      }
+      .hero-badge-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--orange);
+        animation: starPulse 2.5s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+      @keyframes starPulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(169, 129, 243, 0.7);
+        }
+        50% {
+          box-shadow: 0 0 0 7px rgba(169, 129, 243, 0);
+        }
+      }
+
+      /* ── Name clip-reveal ── */
+      .hero-name-wrap {
+        overflow: hidden;
+        line-height: 0.95;
       }
       .hero-name {
         font-family: "Bebas Neue", sans-serif;
@@ -195,6 +256,10 @@
         line-height: 0.88;
         letter-spacing: -2px;
         color: var(--off-white);
+        display: block;
+        opacity: 0;
+        transform: translateY(110%);
+        animation: heroSlideUp 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards;
       }
       .hero-name-italic {
         font-family: "Playfair Display", serif;
@@ -204,20 +269,79 @@
         line-height: 1;
         display: block;
         margin-top: 8px;
+        opacity: 0;
+        transform: translateY(110%);
+        animation: heroSlideUp 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards;
       }
+      @keyframes heroSlideUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
       .hero-desc {
         max-width: 460px;
         margin-top: 32px;
         font-size: 15px;
         line-height: 1.75;
         color: var(--muted-light);
+        opacity: 0;
+        transform: translateY(18px);
+        animation: heroFadeUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.85s forwards;
       }
       .hero-cta {
         display: flex;
         gap: 24px;
         margin-top: 48px;
         align-items: center;
+        opacity: 0;
+        transform: translateY(18px);
+        animation: heroFadeUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 1.05s forwards;
       }
+      @keyframes heroFadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── Hero image entrance ── */
+      #heroImgWrap {
+        opacity: 0;
+        transform: translateY(-48%) scale(0.97);
+        animation: heroImgIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.25s forwards;
+      }
+      @keyframes heroImgIn {
+        to {
+          opacity: 1;
+          transform: translateY(-50%) scale(1);
+        }
+      }
+
+      /* ── Scroll indicator ── */
+      .scroll-indicator {
+        position: absolute;
+        right: 60px;
+        bottom: 60px;
+        writing-mode: vertical-rl;
+        font-size: 10px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        opacity: 0;
+        animation: heroFadeUp 0.8s ease 1.5s forwards;
+      }
+      .scroll-indicator::before {
+        content: "";
+        width: 1px;
+        height: 60px;
+        background: var(--orange);
+      }
+
       .btn-primary {
         background: var(--orange);
         color: var(--black);
@@ -251,26 +375,6 @@
       .btn-ghost:hover {
         gap: 16px;
       }
-      .scroll-indicator {
-        position: absolute;
-        right: 60px;
-        bottom: 60px;
-        writing-mode: vertical-rl;
-        font-size: 10px;
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        color: var(--muted);
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      .scroll-indicator::before {
-        content: "";
-        width: 1px;
-        height: 60px;
-        background: var(--orange);
-      }
-
       /* ABOUT */
       #about {
         display: grid;
@@ -783,9 +887,1103 @@
           display: none;
         }
       }
+
+      /* ===========================================================
+         NEW WORKS SECTION (replaces old tabs/grid/cards/popup CSS)
+         =========================================================== */
+      #works {
+        border-top: 1px solid var(--border);
+        padding-top: 80px;
+        padding-bottom: 80px;
+      }
+      #works .section-head {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      /* TABS — pill style with sliding background */
+      .works-tabs {
+        display: flex;
+        justify-content: flex-start;
+        gap: 6px;
+        margin: 40px auto 40px;
+        flex-wrap: nowrap;
+        padding: 6px;
+        background: var(--black);
+        border: 1px solid rgba(169, 129, 243, 0.15);
+        border-radius: 100px;
+        width: fit-content;
+        max-width: 100%;
+        position: relative;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .works-tabs::-webkit-scrollbar {
+        display: none;
+      }
+      .works-tabs {
+        scrollbar-width: none;
+      }
+      .tab-btn {
+        padding: 10px 18px;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--muted-light);
+        transition: color 0.3s;
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+        font-family: "DM Sans", sans-serif;
+        letter-spacing: 0.5px;
+      }
+      .tab-btn .count {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        padding: 2px 6px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 100px;
+        color: var(--muted);
+        transition: all 0.3s;
+      }
+      .tab-btn.active {
+        color: var(--black);
+      }
+      .tab-btn.active .count {
+        background: rgba(3, 3, 10, 0.2);
+        color: var(--black);
+      }
+      .tab-bg {
+        position: absolute;
+        top: 6px;
+        bottom: 6px;
+        background: var(--orange);
+        border-radius: 100px;
+        transition:
+          left 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+          width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        z-index: 1;
+        box-shadow: 0 0 16px rgba(169, 129, 243, 0.35);
+      }
+      html[dir="rtl"] .works-tabs {
+        font-family: "Tajawal", sans-serif;
+      }
+      html[dir="rtl"] .tab-btn {
+        font-family: "Tajawal", sans-serif;
+      }
+
+      /* GRID */
+      .works-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-auto-rows: 200px;
+        gap: 16px;
+      }
+      .work-card {
+        background: var(--black);
+        border: 1px solid rgba(169, 129, 243, 0.18);
+        border-radius: 20px;
+        overflow: hidden;
+        transition:
+          opacity 0.35s cubic-bezier(0.65, 0, 0.35, 1),
+          transform 0.4s cubic-bezier(0.65, 0, 0.35, 1),
+          border-color 0.4s,
+          box-shadow 0.4s,
+          background 0.4s;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        grid-column: span 2;
+        grid-row: span 2;
+        text-decoration: none;
+        color: inherit;
+      }
+      .work-card.span-3 {
+        grid-column: span 3;
+      }
+      .work-card.span-4 {
+        grid-column: span 4;
+      }
+      .work-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(169, 129, 243, 0.4);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+      .work-card-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      a.work-card {
+        text-decoration: none;
+        color: inherit;
+      }
+      a.work-card:focus-visible {
+        outline: 2px solid var(--orange);
+        outline-offset: 2px;
+      }
+
+      .work-card.filtering-out {
+        opacity: 0;
+        transform: scale(0.92);
+        pointer-events: none;
+      }
+      .work-card.hidden {
+        display: none !important;
+      }
+      .work-card.filtering-in {
+        animation: filterIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      @keyframes filterIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px) scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .work-visual {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        min-height: 160px;
+      }
+
+      /* PLACEHOLDER (emoji / text) */
+      .work-placeholder-new {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(40px, 6vw, 84px);
+        color: rgba(255, 255, 255, 0.18);
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        letter-spacing: 4px;
+        user-select: none;
+      }
+
+      /* SOCIAL-CARD CAROUSEL */
+      .social-card {
+        cursor: pointer;
+      }
+      .visual-social {
+        background: #08090b;
+        position: relative;
+        overflow: hidden;
+      }
+      .social-track {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: transform;
+      }
+      .social-slide {
+        flex: 0 0 100%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        background: #0a0a0a;
+      }
+      .social-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        pointer-events: none;
+      }
+      .social-slide::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          transparent 70%,
+          rgba(8, 9, 11, 0.4)
+        );
+        pointer-events: none;
+      }
+      .social-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(8, 9, 11, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--off-white);
+        font-size: 18px;
+        cursor: pointer;
+        opacity: 0;
+        transition:
+          opacity 0.3s,
+          background 0.3s,
+          border-color 0.3s,
+          transform 0.3s;
+        z-index: 4;
+        line-height: 1;
+        padding: 0;
+      }
+      .work-card:hover .social-arrow {
+        opacity: 1;
+      }
+      .social-arrow:hover {
+        background: var(--orange);
+        border-color: var(--orange);
+        color: var(--black);
+      }
+      .social-arrow.prev {
+        left: 12px;
+      }
+      .social-arrow.next {
+        right: 12px;
+      }
+      /* Always-visible arrows on touch devices */
+      @media (hover: none) {
+        .social-arrow {
+          opacity: 1;
+        }
+      }
+
+      .social-dots {
+        position: absolute;
+        bottom: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 5px;
+        z-index: 3;
+        padding: 6px 10px;
+        background: rgba(8, 9, 11, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 100px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        max-width: calc(100% - 32px);
+        overflow-x: auto;
+      }
+      .social-dots::-webkit-scrollbar {
+        display: none;
+      }
+      .social-dot {
+        width: 5px;
+        height: 5px;
+        flex: 0 0 auto;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transition:
+          background 0.3s,
+          width 0.3s;
+      }
+      .social-dot.active {
+        background: var(--orange);
+        width: 16px;
+        box-shadow: 0 0 8px rgba(169, 129, 243, 0.6);
+      }
+      .social-counter {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        z-index: 3;
+        padding: 5px 10px;
+        background: rgba(8, 9, 11, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 100px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        color: var(--off-white);
+        letter-spacing: 0.05em;
+      }
+      .social-counter span {
+        color: var(--muted-light);
+      }
+      html[dir="rtl"] .social-counter {
+        right: auto;
+        left: 14px;
+      }
+
+      /* WORK INFO */
+      .work-info {
+        padding: 16px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        border-top: 1px solid rgba(169, 129, 243, 0.18);
+        background: var(--black);
+      }
+      .work-info-left {
+        flex: 1;
+        min-width: 0;
+      }
+      .work-name {
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: var(--off-white);
+      }
+      .work-tags {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .work-mini-tag {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 9px;
+        padding: 2px 8px;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 100px;
+        color: var(--muted-light);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .work-mini-tag.accent {
+        background: rgba(169, 129, 243, 0.12);
+        color: var(--orange);
+      }
+      .work-arrow-btn {
+        flex-shrink: 0;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+        font-size: 14px;
+        color: var(--off-white);
+      }
+      .work-card:hover .work-arrow-btn {
+        background: var(--orange);
+        border-color: var(--orange);
+        color: var(--black);
+      }
+      .social-card:hover .work-arrow-btn {
+        transform: scale(1.08);
+      }
+
+      /* LIGHTBOX */
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        background: rgba(3, 3, 10, 0.92);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+          opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+          visibility 0.4s;
+        padding: 60px 80px;
+      }
+      .lightbox.open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+      .lightbox-stage {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        max-width: 1100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: scale(0.92);
+        opacity: 0;
+        transition:
+          transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+          opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .lightbox.open .lightbox-stage {
+        transform: scale(1);
+        opacity: 1;
+      }
+      .lightbox-img-wrap {
+        position: relative;
+        max-width: 100%;
+        max-height: 100%;
+        aspect-ratio: 1 / 1;
+        width: min(85vh, 90vw, 720px);
+        border-radius: 16px;
+        overflow: hidden;
+        background: #0a0a0a;
+        box-shadow:
+          0 30px 80px rgba(0, 0, 0, 0.6),
+          0 0 0 1px rgba(255, 255, 255, 0.14);
+      }
+      .lightbox-track {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .lightbox-track > div {
+        flex: 0 0 100%;
+        height: 100%;
+      }
+      .lightbox-track img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: #0a0a0a;
+        display: block;
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+      .lightbox-close {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        color: var(--off-white);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+        z-index: 2;
+        font-size: 22px;
+        line-height: 1;
+        padding: 0;
+      }
+      .lightbox-close:hover {
+        background: var(--orange);
+        color: var(--black);
+        border-color: var(--orange);
+        transform: rotate(90deg);
+      }
+      .lightbox-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        color: var(--off-white);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 22px;
+        transition: all 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+        z-index: 2;
+        line-height: 1;
+        padding: 0;
+      }
+      .lightbox-nav:hover {
+        background: var(--orange);
+        color: var(--black);
+        border-color: var(--orange);
+      }
+      .lightbox-nav.prev {
+        left: 16px;
+      }
+      .lightbox-nav.next {
+        right: 16px;
+      }
+      .lightbox-meta {
+        position: absolute;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+        padding: 10px 16px;
+        background: rgba(8, 9, 11, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 100px;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: var(--muted-light);
+        letter-spacing: 0.05em;
+      }
+      .lightbox-meta span.cur {
+        color: var(--orange);
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 900px) {
+        .works-grid {
+          grid-template-columns: repeat(4, 1fr);
+          grid-auto-rows: 180px;
+        }
+        .work-card {
+          grid-column: span 2;
+        }
+        .work-card.span-3,
+        .work-card.span-4 {
+          grid-column: span 4;
+        }
+      }
+      @media (max-width: 600px) {
+        #works {
+          padding-top: 56px;
+          padding-bottom: 56px;
+        }
+        .works-grid {
+          grid-template-columns: 1fr;
+          grid-auto-rows: 240px;
+          gap: 12px;
+        }
+        .work-card,
+        .work-card.span-3,
+        .work-card.span-4 {
+          grid-column: span 1;
+        }
+        .work-info {
+          padding: 14px 16px;
+        }
+        .work-name {
+          font-size: 14px;
+        }
+        .work-mini-tag {
+          font-size: 8px;
+          padding: 2px 6px;
+        }
+        .tab-btn {
+          padding: 8px 12px;
+          font-size: 11px;
+        }
+        .lightbox {
+          padding: 20px;
+        }
+        .lightbox-img-wrap {
+          width: 100%;
+        }
+        .lightbox-close {
+          top: 12px;
+          right: 12px;
+          width: 38px;
+          height: 38px;
+          font-size: 18px;
+        }
+        .lightbox-nav {
+          width: 42px;
+          height: 42px;
+          font-size: 18px;
+        }
+        .lightbox-nav.prev {
+          left: 8px;
+        }
+        .lightbox-nav.next {
+          right: 8px;
+        }
+      }
+
+      /* ===== LANGUAGE TOGGLE ===== */
+      .lang-toggle {
+        position: fixed;
+        bottom: 32px;
+        left: 32px;
+        z-index: 200;
+        display: flex;
+        border: 1px solid #2a2a2a;
+        overflow: hidden;
+      }
+      .lang-btn {
+        padding: 10px 16px;
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted-light);
+        background: var(--dark-card);
+        border: none;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition:
+          color 0.2s,
+          background 0.2s;
+      }
+      .lang-btn.active {
+        background: var(--orange);
+        color: var(--black);
+        font-weight: 500;
+      }
+      .lang-sep {
+        width: 1px;
+        background: #2a2a2a;
+      }
+
+      /* ===== RTL OVERRIDES (Arabic mode) ===== */
+      html[dir="rtl"] body {
+        font-family: "Tajawal", sans-serif;
+      }
+      html[dir="rtl"] nav {
+        flex-direction: row-reverse;
+      }
+      html[dir="rtl"] .nav-links {
+        flex-direction: row-reverse;
+      }
+      html[dir="rtl"] #hero {
+        direction: rtl;
+      }
+      html[dir="rtl"] .scroll-indicator {
+        right: auto;
+        left: 60px;
+      }
+      html[dir="rtl"] #about {
+        direction: rtl;
+      }
+      html[dir="rtl"] .section-headline {
+        letter-spacing: 0;
+      }
+      html[dir="rtl"] .about-text,
+      html[dir="rtl"] .about-stats,
+      html[dir="rtl"] .skill-card,
+      html[dir="rtl"] .skill-tags,
+      html[dir="rtl"] .exp-header,
+      html[dir="rtl"] .exp-item,
+      html[dir="rtl"] .exp-desc,
+      html[dir="rtl"] .proj-header,
+      html[dir="rtl"] .proj-featured > div:last-child,
+      html[dir="rtl"] .proj-card > div:last-child,
+      html[dir="rtl"] .blog-content,
+      html[dir="rtl"] #contact,
+      html[dir="rtl"] footer {
+        direction: rtl;
+        text-align: right;
+      }
+      html[dir="rtl"] .skills-header {
+        direction: rtl;
+      }
+      html[dir="rtl"] .proj-arrow {
+        right: auto;
+        left: 32px;
+      }
+      html[dir="rtl"] .skill-card::before {
+        transform-origin: right;
+      }
+      html[dir="rtl"] .hero-cta {
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+      }
+      html[dir="rtl"] #contact {
+        direction: rtl;
+        text-align: center;
+      }
+      html[dir="rtl"] .contact-headline {
+        text-align: center;
+        direction: rtl;
+      }
+      html[dir="rtl"] .contact-headline span,
+      html[dir="rtl"] .contact-headline em {
+        display: block;
+        text-align: center;
+      }
+      html[dir="rtl"] .contact-sub {
+        text-align: center;
+      }
+      html[dir="rtl"] .contact-links {
+        justify-content: center;
+      }
+
+      /* ===== GFX CARD CATEGORY LABEL ===== */
+      .gfx-card-label {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        z-index: 20;
+        background: rgba(3, 3, 10, 0.72);
+        border: 1px solid rgba(169, 129, 243, 0.45);
+        backdrop-filter: blur(6px);
+        padding: 5px 12px;
+        font-size: 9px;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: var(--orange);
+        font-family: "DM Sans", sans-serif;
+        font-weight: 500;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+      html[dir="rtl"] .gfx-card-label {
+        left: auto;
+        right: 14px;
+        font-family: "Tajawal", sans-serif;
+        letter-spacing: 0.5px;
+      }
+
+      /* ===== GFX CARD SLIDER ===== */
+      .gfx-card {
+        position: relative;
+        cursor: pointer;
+      }
+      .gfx-slider {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      .gfx-slides {
+        display: flex;
+        height: 100%;
+        transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform;
+      }
+      .gfx-slide {
+        min-width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .gfx-slide-label {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 14px;
+        letter-spacing: 3px;
+        color: rgba(255, 255, 255, 0.5);
+        user-select: none;
+      }
+      .gfx-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.55);
+        border: none;
+        color: #fff;
+        font-size: 26px;
+        line-height: 1;
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        opacity: 0;
+        transition:
+          opacity 0.2s,
+          background 0.2s;
+        padding: 0;
+      }
+      .gfx-card:hover .gfx-arrow {
+        opacity: 1;
+      }
+      .gfx-arrow:hover {
+        background: var(--orange) !important;
+        color: var(--black) !important;
+      }
+      .gfx-prev {
+        left: 8px;
+      }
+      .gfx-next {
+        right: 8px;
+      }
+      /* On touch devices (no hover), always show arrows + bigger tap target */
+      @media (hover: none) {
+        .gfx-arrow {
+          opacity: 1;
+          width: 40px;
+          height: 40px;
+          font-size: 28px;
+          background: rgba(0, 0, 0, 0.65);
+        }
+      }
+      .gfx-slider-dots {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 6px;
+        z-index: 10;
+      }
+      .gfx-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.35);
+        transition:
+          background 0.25s,
+          transform 0.25s;
+        cursor: pointer;
+      }
+      .gfx-dot.active {
+        background: var(--orange);
+        transform: scale(1.3);
+      }
+
+      /* ===== GFX POPUP ===== */
+      .gfx-popup {
+        position: fixed;
+        inset: 0;
+        background: rgba(3, 3, 10, 0.92);
+        z-index: 2000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        backdrop-filter: blur(6px);
+      }
+      .gfx-popup.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .gfx-popup-inner {
+        background: #141414;
+        border: 1px solid #1e1e1e;
+        width: min(820px, 95vw);
+        max-height: 92vh;
+        overflow-y: auto;
+        padding: 40px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        transform: translateY(24px) scale(0.97);
+        transition: transform 0.3s ease;
+      }
+      .gfx-popup.open .gfx-popup-inner {
+        transform: translateY(0) scale(1);
+      }
+      .gfx-popup-close {
+        position: absolute;
+        top: 16px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: var(--muted-light);
+        font-size: 28px;
+        cursor: pointer;
+        line-height: 1;
+        transition: color 0.2s;
+        z-index: 10;
+      }
+      .gfx-popup-close:hover {
+        color: var(--orange);
+      }
+      .gfx-popup-header {
+        padding-right: 32px;
+      }
+      .gfx-popup-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 32px;
+        letter-spacing: 1px;
+        color: var(--off-white);
+        margin-bottom: 4px;
+      }
+      .gfx-popup-sub {
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--orange);
+      }
+      .gfx-popup-stage {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .gfx-popup-display {
+        flex: 1;
+        aspect-ratio: 16/10;
+        border: 1px solid #222;
+        overflow: hidden;
+        position: relative;
+        background: #0a0a0a;
+      }
+      .gfx-popup-display .gfx-slides {
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .gfx-popup-display .gfx-slide {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 32px;
+        letter-spacing: 4px;
+        color: rgba(255, 255, 255, 0.35);
+      }
+      .gfx-popup-display .gfx-slide-label {
+        font-size: 32px;
+        letter-spacing: 4px;
+      }
+      .gfx-popup-nav {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        background: #1e1e1e;
+        border: 1px solid #2a2a2a;
+        color: var(--off-white);
+        font-size: 28px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          background 0.2s,
+          color 0.2s;
+        line-height: 1;
+      }
+      .gfx-popup-nav:hover {
+        background: var(--orange);
+        color: var(--black);
+      }
+      .gfx-popup-counter {
+        text-align: center;
+        font-size: 11px;
+        letter-spacing: 3px;
+        color: var(--muted);
+        text-transform: uppercase;
+      }
+      .gfx-popup-thumbs {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .gfx-popup-thumb {
+        width: 72px;
+        height: 52px;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: border-color 0.2s;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .gfx-popup-thumb.active {
+        border-color: var(--orange);
+      }
+      .gfx-popup-thumb > div {
+        width: 100%;
+        height: 100%;
+      }
+      @media (max-width: 600px) {
+        .gfx-popup-inner {
+          padding: 20px 14px;
+          width: 100vw;
+          max-height: 100vh;
+          height: 100vh;
+          gap: 16px;
+          border-radius: 0;
+        }
+        .gfx-popup-title {
+          font-size: 22px;
+        }
+        .gfx-popup-sub {
+          font-size: 10px;
+          letter-spacing: 2px;
+        }
+        /* Make the stage a positioned container for overlay nav buttons */
+        .gfx-popup-stage {
+          position: relative;
+          gap: 0;
+        }
+        .gfx-popup-display {
+          /* Square works better for social-media-style designs on phones */
+          aspect-ratio: 1 / 1;
+          width: 100%;
+          flex: 1 1 auto;
+        }
+        /* Float nav buttons over the image, like the card slider arrows */
+        .gfx-popup-nav {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 42px;
+          height: 42px;
+          font-size: 22px;
+          background: rgba(0, 0, 0, 0.65);
+          border-color: rgba(255, 255, 255, 0.15);
+          color: #fff;
+          z-index: 5;
+        }
+        .gfx-popup-nav.gfx-popup-prev {
+          left: 8px;
+        }
+        .gfx-popup-nav.gfx-popup-next {
+          right: 8px;
+        }
+        .gfx-popup-display .gfx-slide-label {
+          font-size: 18px;
+        }
+        .gfx-popup-thumb {
+          width: 56px;
+          height: 56px;
+        }
+        .gfx-popup-close {
+          font-size: 32px;
+          top: 12px;
+          right: 14px;
+        }
+      }
     </style>
   </head>
   <body>
+    <!--
+      ╔══════════════════════════════════════════════════════════════════════╗
+      ║  🖼️  IMAGE QUICK-REFERENCE                                          ║
+      ║                                                                       ║
+      ║  Search this file for "🖼️" (the picture emoji) to jump to every     ║
+      ║  spot where an image goes. Image locations in this file:             ║
+      ║                                                                       ║
+      ║    1. HERO IMAGE         — main photo on hero/landing section        ║
+      ║    2. ABOUT IMAGE        — photo on the About Me section             ║
+      ║    3. WORKS — SOCIAL CARDS (5 carousel cards in Graphic tab):        ║
+      ║         Card 1: Abwaab set 1     — 5 images                          ║
+      ║         Card 2: Abwaab set 2     — 5 images                          ║
+      ║         Card 3: Bayt Alyalanji   — 6 images                          ║
+      ║         Card 4: Dr. Ayat Sabah   — 9 images                          ║
+      ║         Card 5: Sport Designs    — 2 images                          ║
+      ║    4. WORKS — LINKED CARDS (30 cards across Space/Abwaab/Bayt/      ║
+      ║         Taqeef/Ameena tabs). Each card is a clickable <a> link.      ║
+      ║         For each card: replace BOTH the href="#" AND the src="..."   ║
+      ║         (currently a purple placeholder image).                      ║
+      ╚══════════════════════════════════════════════════════════════════════╝
+    -->
+
+    <!-- Language Toggle -->
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btnEn" onclick="setLang('en')">
+        EN
+      </button>
+      <div class="lang-sep"></div>
+      <button class="lang-btn" id="btnAr" onclick="setLang('ar')">AR</button>
+    </div>
+
     <!-- Custom Cursor -->
     <div class="cursor" id="cursor"></div>
     <div class="cursor-ring" id="cursorRing"></div>
@@ -794,18 +1992,31 @@
     <nav id="navbar">
       <a href="#" class="logo">K<span>.</span>M</a>
       <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#blog">Content</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#about" data-en="About" data-ar="عني">About</a></li>
+        <li>
+          <a href="#works" data-en="Works" data-ar="اعمالي">Works</a>
+        </li>
+        <li>
+          <a href="#skills" data-en="Skills" data-ar="المهارات">Skills</a>
+        </li>
+        <li>
+          <a href="#experience" data-en="Experience" data-ar="الخبرة"
+            >Experience</a
+          >
+        </li>
+        <li>
+          <a href="#contact" data-en="Contact" data-ar="تواصل">Contact</a>
+        </li>
       </ul>
     </nav>
 
     <!-- HERO -->
     <section id="hero" style="position: relative">
+      <canvas id="heroCanvas"></canvas>
+      <div class="hero-nebula"></div>
+
       <span
+        id="heroImgWrap"
         class="about-initials"
         style="
           position: absolute;
@@ -816,58 +2027,54 @@
           height: 600px;
         "
       >
+        <!-- 🖼️ HERO IMAGE — Your main hero photo (right side of hero section). Replace the URL below. -->
         <img
-          src="karrar.png"
+          id="heroImg"
+          src="https://i.ibb.co/x8zzYg5F/karrar.png"
           alt="About Image"
           style="width: 100%; height: 100%; object-fit: cover"
         />
       </span>
 
-      <div class="hero-label reveal">Available for Freelance — 2026</div>
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        <span
+          data-en="Available for Freelance — 2026"
+          data-ar="متاح للعمل الحر — 2026"
+          >Available for Freelance — 2026</span
+        >
+      </div>
 
-      <h1 class="reveal reveal-delay-1">
+      <div class="hero-name-wrap">
         <span class="hero-name">KARRAR</span>
         <em class="hero-name-italic">Mohammed</em>
-      </h1>
+      </div>
 
-      <p class="hero-desc reveal reveal-delay-2">
+      <p
+        class="hero-desc"
+        data-en="Social Media Specialist crafting bold digital stories..."
+        data-ar="متخصص في وسائل التواصل الاجتماعي يصنع قصصاً رقمية جريئة..."
+      >
         Social Media Specialist crafting bold digital stories...
       </p>
     </section>
-
-    <!-- TICKER -->
-    <div class="ticker">
-      <div class="ticker-inner">
-        <span class="ticker-item">Content Strategy</span>
-        <span class="ticker-item">Social Media</span>
-        <span class="ticker-item">Community Building</span>
-        <span class="ticker-item">Copywriting</span>
-        <span class="ticker-item">Digital Storytelling</span>
-        <span class="ticker-item">Space Science</span>
-        <span class="ticker-item">Brand Campaigns</span>
-        <span class="ticker-item">Content Strategy</span>
-        <span class="ticker-item">Social Media</span>
-        <span class="ticker-item">Community Building</span>
-        <span class="ticker-item">Copywriting</span>
-        <span class="ticker-item">Digital Storytelling</span>
-        <span class="ticker-item">Space Science</span>
-        <span class="ticker-item">Brand Campaigns</span>
-      </div>
-    </div>
 
     <!-- ABOUT -->
     <section id="about">
       <div class="about-image-placeholder reveal">
         <span class="about-initials">
+          <!-- 🖼️ ABOUT IMAGE — Your photo for the About section. Replace the URL below. -->
           <img
-            src="karrar1.png"
+            src="https://i.ibb.co/chJYpHNc/karrar1.png"
             alt="About Image"
             style="width: 100%; height: 100%; object-fit: fill"
           />
         </span>
       </div>
       <div class="about-right">
-        <p class="section-label reveal">About Me</p>
+        <p class="section-label reveal" data-en="About Me" data-ar="عن نفسي">
+          About Me
+        </p>
         <h2 class="section-headline reveal reveal-delay-1">
           CONTENT IS<br />
           <em>connection</em><br />
@@ -890,24 +2097,2006 @@
         <div class="about-stats reveal reveal-delay-3">
           <div>
             <div class="stat-num">5+</div>
-            <div class="stat-label">Years Creating</div>
+            <div
+              class="stat-label"
+              data-en="Years Creating"
+              data-ar="سنوات من الإبداع"
+            >
+              Years Creating
+            </div>
           </div>
           <div>
             <div class="stat-num">3+</div>
-            <div class="stat-label">Platforms Managed</div>
+            <div
+              class="stat-label"
+              data-en="Platforms Managed"
+              data-ar="منصات مُدارة"
+            >
+              Platforms Managed
+            </div>
           </div>
           <div>
             <div class="stat-num">∞</div>
-            <div class="stat-label">Ideas Per Day</div>
+            <div
+              class="stat-label"
+              data-en="Ideas Per Day"
+              data-ar="أفكار يومياً"
+            >
+              Ideas Per Day
+            </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- WORKS -->
+    <section id="works">
+      <p
+        class="section-label reveal"
+        data-en="Selected Works"
+        data-ar="مختارات من أعمالي"
+      >
+        Selected Works
+      </p>
+      <h2
+        class="section-headline reveal reveal-delay-1"
+        data-en="WORKS"
+        data-ar="اعمالي"
+      >
+        WORKS
+      </h2>
+
+      <div class="works-tabs reveal" role="tablist">
+        <div class="tab-bg" id="tab-bg"></div>
+        <button
+          class="tab-btn active"
+          data-filter="all"
+          data-en="All"
+          data-ar="الكل"
+        >
+          All
+        </button>
+        <button
+          class="tab-btn"
+          data-filter="space"
+          data-en="Space"
+          data-ar="الفضاء"
+        >
+          Space
+        </button>
+        <button
+          class="tab-btn"
+          data-filter="abwaab"
+          data-en="Abwaab"
+          data-ar="أبواب"
+        >
+          Abwaab
+        </button>
+        <button
+          class="tab-btn"
+          data-filter="graphic"
+          data-en="Graphic"
+          data-ar="جرافيك"
+        >
+          Graphic <span class="count">5</span>
+        </button>
+        <button class="tab-btn" data-filter="bayt" data-en="Bayt" data-ar="بيت">
+          Bayt
+        </button>
+        <button
+          class="tab-btn"
+          data-filter="taqeef"
+          data-en="Taqeef"
+          data-ar="تكييف"
+        >
+          Taqeef
+        </button>
+        <button
+          class="tab-btn"
+          data-filter="ameena"
+          data-en="Ameena"
+          data-ar="أمينة"
+        >
+          Ameena
+        </button>
+      </div>
+
+      <div class="works-grid" id="works-grid">
+        <!-- 🖼️🔗 LINKED CARD — was "🔭" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="space"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Black Holes Explained"
+                data-ar="شرح الثقوب السوداء"
+              >
+                Black Holes Explained
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Space Content"
+                  data-ar="محتوى الفضاء"
+                  >Space Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="@spaceiraq · Educational"
+                  data-ar="@spaceiraq · تعليمي"
+                  >@spaceiraq · Educational</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "🌌" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="space"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="The Milky Way Series"
+                data-ar="سلسلة درب التبانة"
+              >
+                The Milky Way Series
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Space Content"
+                  data-ar="محتوى الفضاء"
+                  >Space Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Astronomy · Storytelling"
+                  data-ar="فلك · سرد قصصي"
+                  >Astronomy · Storytelling</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "🚀" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="space"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Space Missions Coverage"
+                data-ar="تغطية مهام الفضاء"
+              >
+                Space Missions Coverage
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Space Content"
+                  data-ar="محتوى الفضاء"
+                  >Space Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="News · Science Comm."
+                  data-ar="أخبار · تواصل علمي"
+                  >News · Science Comm.</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "🪐" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="space"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Solar System Guide"
+                data-ar="دليل المجموعة الشمسية"
+              >
+                Solar System Guide
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Space Content"
+                  data-ar="محتوى الفضاء"
+                  >Space Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Educational Series"
+                  data-ar="سلسلة تعليمية"
+                  >Educational Series</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "⭐" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="space"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Stars Life Cycle"
+                data-ar="دورة حياة النجوم"
+              >
+                Stars Life Cycle
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Space Content"
+                  data-ar="محتوى الفضاء"
+                  >Space Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Science · Visuals"
+                  data-ar="علوم · مرئيات"
+                  >Science · Visuals</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "🌙" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="space"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Moon Phases Content"
+                data-ar="محتوى أطوار القمر"
+              >
+                Moon Phases Content
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Space Content"
+                  data-ar="محتوى الفضاء"
+                  >Space Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Monthly Series"
+                  data-ar="سلسلة شهرية"
+                  >Monthly Series</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "ABWAAB 01" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="abwaab"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Student Motivation Series"
+                data-ar="سلسلة تحفيز الطلاب"
+              >
+                Student Motivation Series
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Abwaab Content"
+                  data-ar="محتوى أبواب"
+                  >Abwaab Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Educational · Instagram"
+                  data-ar="تعليمي · إنستغرام"
+                  >Educational · Instagram</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "ABWAAB 02" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="abwaab"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Exam Prep Campaign"
+                data-ar="حملة التحضير للامتحانات"
+              >
+                Exam Prep Campaign
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Abwaab Content"
+                  data-ar="محتوى أبواب"
+                  >Abwaab Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Content · Strategy"
+                  data-ar="محتوى · استراتيجية"
+                  >Content · Strategy</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "ABWAAB 03" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="abwaab"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Subject Explainer Posts"
+                data-ar="منشورات شرح المواد"
+              >
+                Subject Explainer Posts
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Abwaab Content"
+                  data-ar="محتوى أبواب"
+                  >Abwaab Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Education · Copywriting"
+                  data-ar="تعليم · كتابة إعلانية"
+                  >Education · Copywriting</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "ABWAAB 04" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="abwaab"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://i.ibb.co/fY7jsfPT/2026-05-17-21-25-04.jpg"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Back to School Campaign"
+                data-ar="حملة العودة إلى المدرسة"
+              >
+                Back to School Campaign
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Abwaab Content"
+                  data-ar="محتوى أبواب"
+                  >Abwaab Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Seasonal · Social Media"
+                  data-ar="موسمي · سوشيال ميديا"
+                  >Seasonal · Social Media</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "ABWAAB 05" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="abwaab"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Teacher Appreciation Content"
+                data-ar="محتوى تكريم المعلمين"
+              >
+                Teacher Appreciation Content
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Abwaab Content"
+                  data-ar="محتوى أبواب"
+                  >Abwaab Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Community · Engagement"
+                  data-ar="مجتمع · تفاعل"
+                  >Community · Engagement</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "ABWAAB 06" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="abwaab"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Platform Feature Highlights"
+                data-ar="إبراز مميزات المنصة"
+              >
+                Platform Feature Highlights
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Abwaab Content"
+                  data-ar="محتوى أبواب"
+                  >Abwaab Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Product · Awareness"
+                  data-ar="منتج · وعي"
+                  >Product · Awareness</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- ============================================================ -->
+        <!-- 🖼️🖼️🖼️ Card 1 — Abwaab Graphic Designs (set 1) — 5 images -->
+        <!-- Replace each "src" URL below with your own image. -->
+        <!-- If you change the number of images, also update:           -->
+        <!--   • the dots count (one <span class="social-dot"></span>)  -->
+        <!--   • the counter text  (e.g. 01 / 05)                       -->
+        <!--   • the "N IMG" tag in the work-info section               -->
+        <!-- ============================================================ -->
+        <div
+          class="work-card social-card"
+          data-cat="graphic"
+          role="button"
+          tabindex="0"
+        >
+          <div class="work-visual visual-social">
+            <div class="social-track" data-current="0">
+              <!-- 🖼️ Slide 1 of 5 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/r2CfXKc6/2026-05-17-21-18-01.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 2 of 5 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/3JxFg4k/2026-05-17-21-24-59.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 3 of 5 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/4RXqLpFh/2026-05-17-21-25-02.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 4 of 5 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/fY7jsfPT/2026-05-17-21-25-04.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 5 of 5 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/7JbVj5Zr/2026-05-17-21-25-07.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <button class="social-arrow prev" aria-label="Previous">
+              &#8249;
+            </button>
+            <button class="social-arrow next" aria-label="Next">&#8250;</button>
+            <div class="social-counter"><span class="cur">01</span> / 05</div>
+            <div class="social-dots">
+              <span class="social-dot active"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+            </div>
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Abwaab Graphic Designs"
+                data-ar="تصاميم أبواب"
+              >
+                Abwaab Graphic Designs
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Graphic Design"
+                  data-ar="تصميم جرافيك"
+                  >Graphic Design</span
+                >
+                <span class="work-mini-tag">5 IMG</span>
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </div>
+        <!-- ============================================================ -->
+        <!-- 🖼️🖼️🖼️ Card 2 — Abwaab Graphic Designs (set 2) — 5 images -->
+        <!-- Replace each "src" URL below with your own image. -->
+        <!-- If you change the number of images, also update:           -->
+        <!--   • the dots count (one <span class="social-dot"></span>)  -->
+        <!--   • the counter text  (e.g. 01 / 05)                       -->
+        <!--   • the "N IMG" tag in the work-info section               -->
+        <!-- ============================================================ -->
+        <div
+          class="work-card social-card"
+          data-cat="graphic"
+          role="button"
+          tabindex="0"
+        >
+          <div class="work-visual visual-social">
+            <div class="social-track" data-current="0">
+              <!-- 🖼️ Slide 1 of 6 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/pBrZCJb3/2026-05-17-22-31-07.jpg"
+                  alt="2026-05-17-22-31-07"
+                />
+              </div>
+              <!-- 🖼️ Slide 2 of 6 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/rf1ptyYY/2026-05-17-22-31-12.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 3 of 6 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/nN90fhjk/2026-05-17-22-31-10.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 4 of 6 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/NnJ4nQsV/2026-05-17-22-31-14.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 5 of 6 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/GQBS1x9B/2026-05-17-22-31-17.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 6 of 6 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/GQBS1x9B/2026-05-17-22-31-17.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <button class="social-arrow prev" aria-label="Previous">
+              &#8249;
+            </button>
+            <button class="social-arrow next" aria-label="Next">&#8250;</button>
+            <div class="social-counter"><span class="cur">01</span> / 05</div>
+            <div class="social-dots">
+              <span class="social-dot active"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+            </div>
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Abwaab Graphic Designs"
+                data-ar="تصاميم أبواب"
+              >
+                Abwaab Graphic Designs
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Graphic Design"
+                  data-ar="تصميم جرافيك"
+                  >Graphic Design</span
+                >
+                <span class="work-mini-tag">5 IMG</span>
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </div>
+        <!-- ============================================================ -->
+        <!-- 🖼️🖼️🖼️ Card 3 — Bayt Alyalanji Designs — 6 images -->
+        <!-- Replace each "src" URL below with your own image. -->
+        <!-- If you change the number of images, also update:           -->
+        <!--   • the dots count (one <span class="social-dot"></span>)  -->
+        <!--   • the counter text  (e.g. 01 / 05)                       -->
+        <!--   • the "N IMG" tag in the work-info section               -->
+        <!-- ============================================================ -->
+        <div
+          class="work-card social-card"
+          data-cat="graphic"
+          role="button"
+          tabindex="0"
+        >
+          <div class="work-visual visual-social">
+            <div class="social-track" data-current="0">
+              <!-- 🖼️ Slide 1 of 5 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/m56Tnz7X/2026-05-17-22-47-34.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 2 of 5 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/BKBwZqFW/2026-05-17-22-47-23.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 3 of 5 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/hRRzkjns/2026-05-17-22-47-26.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 4 of 5 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/0ybP9zsX/2026-05-17-22-50-38.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+
+              <!-- 🖼️ Slide 5 of 5 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/7dgRbvLf/2026-05-17-22-51-51.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <button class="social-arrow prev" aria-label="Previous">
+              &#8249;
+            </button>
+            <button class="social-arrow next" aria-label="Next">&#8250;</button>
+            <div class="social-counter"><span class="cur">01</span> / 06</div>
+            <div class="social-dots">
+              <span class="social-dot active"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+            </div>
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Bayt Alyalanji Designs"
+                data-ar="تصاميم بيت اليلنجي"
+              >
+                Bayt Alyalanji Designs
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Graphic Design"
+                  data-ar="تصميم جرافيك"
+                  >Graphic Design</span
+                >
+                <span class="work-mini-tag">6 IMG</span>
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </div>
+        <!-- ============================================================ -->
+        <!-- 🖼️🖼️🖼️ Card 4 — Dr. Ayat Sabah Designs — 9 images -->
+        <!-- Replace each "src" URL below with your own image. -->
+        <!-- If you change the number of images, also update:           -->
+        <!--   • the dots count (one <span class="social-dot"></span>)  -->
+        <!--   • the counter text  (e.g. 01 / 05)                       -->
+        <!--   • the "N IMG" tag in the work-info section               -->
+        <!-- ============================================================ -->
+        <div
+          class="work-card social-card"
+          data-cat="graphic"
+          role="button"
+          tabindex="0"
+        >
+          <div class="work-visual visual-social">
+            <div class="social-track" data-current="0">
+              <!-- 🖼️ Slide 1 of 9 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/Y7BxsSfD/2026-05-17-22-53-16.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 2 of 9 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/rGtG4YXc/2026-05-17-22-53-38.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 3 of 9 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/4gwGknCz/2026-05-17-22-53-41.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 4 of 9 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/fztp2N9x/2026-05-17-22-53-31.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 5 of 9 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/HpV8Q8hD/2026-05-17-22-53-54.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <button class="social-arrow prev" aria-label="Previous">
+              &#8249;
+            </button>
+            <button class="social-arrow next" aria-label="Next">&#8250;</button>
+            <div class="social-counter"><span class="cur">01</span> / 09</div>
+            <div class="social-dots">
+              <span class="social-dot active"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+              <span class="social-dot"></span>
+            </div>
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Dr. Ayat Sabah Designs"
+                data-ar="تصاميم د. آيات صباح"
+              >
+                Dr. Ayat Sabah Designs
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Graphic Design"
+                  data-ar="تصميم جرافيك"
+                  >Graphic Design</span
+                >
+                <span class="work-mini-tag">9 IMG</span>
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </div>
+        <!-- ============================================================ -->
+        <!-- 🖼️🖼️🖼️ Card 5 — Sport Graphic Designs — 2 images -->
+        <!-- Replace each "src" URL below with your own image. -->
+        <!-- If you change the number of images, also update:           -->
+        <!--   • the dots count (one <span class="social-dot"></span>)  -->
+        <!--   • the counter text  (e.g. 01 / 05)                       -->
+        <!--   • the "N IMG" tag in the work-info section               -->
+        <!-- ============================================================ -->
+        <div
+          class="work-card social-card"
+          data-cat="graphic"
+          role="button"
+          tabindex="0"
+        >
+          <div class="work-visual visual-social">
+            <div class="social-track" data-current="0">
+              <!-- 🖼️ Slide 1 of 2 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/XrJqvqpk/2026-05-17-22-57-01.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <!-- 🖼️ Slide 2 of 2 — replace URL inside src="..." -->
+              <div class="social-slide">
+                <img
+                  src="https://i.ibb.co/VpgFGX1Q/2026-05-17-22-56-58.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <button class="social-arrow prev" aria-label="Previous">
+              &#8249;
+            </button>
+            <button class="social-arrow next" aria-label="Next">&#8250;</button>
+            <div class="social-counter"><span class="cur">01</span> / 02</div>
+            <div class="social-dots">
+              <span class="social-dot active"></span>
+              <span class="social-dot"></span>
+            </div>
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Sport Graphic Designs"
+                data-ar="تصاميم رياضية"
+              >
+                Sport Graphic Designs
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Graphic Design"
+                  data-ar="تصميم جرافيك"
+                  >Graphic Design</span
+                >
+                <span class="work-mini-tag">2 IMG</span>
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </div>
+        <!-- 🖼️🔗 LINKED CARD — was "🏡" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="bayt"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Restaurant Brand Content"
+                data-ar="محتوى العلامة التجارية"
+              >
+                Restaurant Brand Content
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Bayt Content"
+                  data-ar="محتوى بيت"
+                  >Bayt Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Bayt Alyalanji · Social Media"
+                  data-ar="بيت اليلنجي · سوشيال ميديا"
+                  >Bayt Alyalanji · Social Media</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "🍽️" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="bayt"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Menu Highlights Campaign"
+                data-ar="حملة أبرز قائمة الطعام"
+              >
+                Menu Highlights Campaign
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Bayt Content"
+                  data-ar="محتوى بيت"
+                  >Bayt Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Food Content · Instagram"
+                  data-ar="محتوى طعام · إنستغرام"
+                  >Food Content · Instagram</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "🎉" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="bayt"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Seasonal Offers Content"
+                data-ar="محتوى العروض الموسمية"
+              >
+                Seasonal Offers Content
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Bayt Content"
+                  data-ar="محتوى بيت"
+                  >Bayt Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Promotions · Copywriting"
+                  data-ar="عروض · كتابة إعلانية"
+                  >Promotions · Copywriting</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "📸" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="bayt"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Behind the Scenes Stories"
+                data-ar="كواليس المطعم"
+              >
+                Behind the Scenes Stories
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Bayt Content"
+                  data-ar="محتوى بيت"
+                  >Bayt Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Authentic · Storytelling"
+                  data-ar="أصيل · سرد قصصي"
+                  >Authentic · Storytelling</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "⭐" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="bayt"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Customer Experience Posts"
+                data-ar="منشورات تجربة العميل"
+              >
+                Customer Experience Posts
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Bayt Content"
+                  data-ar="محتوى بيت"
+                  >Bayt Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Community · Engagement"
+                  data-ar="مجتمع · تفاعل"
+                  >Community · Engagement</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "🌿" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="bayt"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Brand Identity Visuals"
+                data-ar="مرئيات الهوية التجارية"
+              >
+                Brand Identity Visuals
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Bayt Content"
+                  data-ar="محتوى بيت"
+                  >Bayt Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Branding · Design"
+                  data-ar="علامة تجارية · تصميم"
+                  >Branding · Design</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "❄️" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="taqeef"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Product Awareness Campaign"
+                data-ar="حملة التعريف بالمنتج"
+              >
+                Product Awareness Campaign
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Taqeef Content"
+                  data-ar="محتوى تكييف"
+                  >Taqeef Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="HVAC · Social Media"
+                  data-ar="تبريد · سوشيال ميديا"
+                  >HVAC · Social Media</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "🌬️" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="taqeef"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Technical Explainer Posts"
+                data-ar="منشورات شرح تقني"
+              >
+                Technical Explainer Posts
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Taqeef Content"
+                  data-ar="محتوى تكييف"
+                  >Taqeef Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Education · Copywriting"
+                  data-ar="تعليم · كتابة إعلانية"
+                  >Education · Copywriting</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "🏠" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="taqeef"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Summer Cooling Campaign"
+                data-ar="حملة التبريد الصيفي"
+              >
+                Summer Cooling Campaign
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Taqeef Content"
+                  data-ar="محتوى تكييف"
+                  >Taqeef Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Seasonal · Promotions"
+                  data-ar="موسمي · عروض"
+                  >Seasonal · Promotions</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "🔧" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="taqeef"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Maintenance Tips Series"
+                data-ar="سلسلة نصائح الصيانة"
+              >
+                Maintenance Tips Series
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Taqeef Content"
+                  data-ar="محتوى تكييف"
+                  >Taqeef Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Service · Education"
+                  data-ar="خدمة · تعليم"
+                  >Service · Education</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "⚡" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="taqeef"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Energy Saving Content"
+                data-ar="محتوى توفير الطاقة"
+              >
+                Energy Saving Content
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Taqeef Content"
+                  data-ar="محتوى تكييف"
+                  >Taqeef Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Awareness · Tips"
+                  data-ar="توعية · نصائح"
+                  >Awareness · Tips</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "🛠️" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="taqeef"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Product Launch Posts"
+                data-ar="منشورات إطلاق منتج"
+              >
+                Product Launch Posts
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Taqeef Content"
+                  data-ar="محتوى تكييف"
+                  >Taqeef Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Launch · Strategy"
+                  data-ar="إطلاق · استراتيجية"
+                  >Launch · Strategy</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "💜" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="ameena"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Brand Identity Content"
+                data-ar="محتوى الهوية التجارية"
+              >
+                Brand Identity Content
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Ameena Content"
+                  data-ar="محتوى أمينة"
+                  >Ameena Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Ameena · Social Media"
+                  data-ar="أمينة · سوشيال ميديا"
+                  >Ameena · Social Media</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "✨" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="ameena"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Product Showcase Posts"
+                data-ar="منشورات عرض المنتجات"
+              >
+                Product Showcase Posts
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Ameena Content"
+                  data-ar="محتوى أمينة"
+                  >Ameena Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Content · Instagram"
+                  data-ar="محتوى · إنستغرام"
+                  >Content · Instagram</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "🌸" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="ameena"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Seasonal Campaign"
+                data-ar="حملة موسمية"
+              >
+                Seasonal Campaign
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Ameena Content"
+                  data-ar="محتوى أمينة"
+                  >Ameena Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Promotions · Copywriting"
+                  data-ar="عروض · كتابة إعلانية"
+                  >Promotions · Copywriting</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "📲" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="ameena"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Engagement Content Series"
+                data-ar="سلسلة محتوى التفاعل"
+              >
+                Engagement Content Series
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Ameena Content"
+                  data-ar="محتوى أمينة"
+                  >Ameena Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Community · Growth"
+                  data-ar="مجتمع · نمو"
+                  >Community · Growth</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "🎀" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="ameena"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Story Highlights Design"
+                data-ar="تصميم هايلايتس الستوري"
+              >
+                Story Highlights Design
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Ameena Content"
+                  data-ar="محتوى أمينة"
+                  >Ameena Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Branding · Visual"
+                  data-ar="علامة تجارية · بصري"
+                  >Branding · Visual</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+        <!-- 🖼️🔗 LINKED CARD — was "💫" emoji placeholder. -->
+        <!-- 1) Replace href="#" with the URL this card should open.       -->
+        <!-- 2) Replace src="..." with your own image URL for this card.   -->
+        <!--
+        <a
+          class="work-card"
+          data-cat="ameena"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-visual">
+            <img
+              class="work-card-img"
+              src="https://placehold.co/800x600/1a0d2e/a981f3/png?text=Click+to+set+image"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="work-info">
+            <div class="work-info-left">
+              <div
+                class="work-name"
+                data-en="Launch Campaign"
+                data-ar="حملة الإطلاق"
+              >
+                Launch Campaign
+              </div>
+              <div class="work-tags">
+                <span
+                  class="work-mini-tag accent"
+                  data-en="Ameena Content"
+                  data-ar="محتوى أمينة"
+                  >Ameena Content</span
+                >
+                <span
+                  class="work-mini-tag"
+                  data-en="Strategy · Awareness"
+                  data-ar="استراتيجية · توعية"
+                  >Strategy · Awareness</span
+                >
+              </div>
+            </div>
+            <div class="work-arrow-btn" aria-hidden="true">&#8599;</div>
+          </div>
+        </a>
+        -->
+      </div>
+    </section>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog">
+      <div class="lightbox-stage">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Close">
+          &times;
+        </button>
+        <button
+          class="lightbox-nav prev"
+          id="lightbox-prev"
+          aria-label="Previous"
+        >
+          &#8249;
+        </button>
+        <div class="lightbox-img-wrap">
+          <div class="lightbox-track" id="lightbox-track"></div>
+        </div>
+        <button class="lightbox-nav next" id="lightbox-next" aria-label="Next">
+          &#8250;
+        </button>
+        <div class="lightbox-meta">
+          <span class="cur" id="lightbox-cur">01</span> /
+          <span id="lightbox-total">01</span>
+        </div>
+      </div>
+    </div>
+
     <!-- SKILLS -->
     <section id="skills">
       <div class="skills-header">
-        <p class="section-label reveal">What I Do</p>
+        <p
+          class="section-label reveal"
+          data-en="What I Do"
+          data-ar="ما أقوم به"
+        >
+          What I Do
+        </p>
         <h2 class="section-headline reveal reveal-delay-1">
           SKILLS &<br />EXPERTISE
         </h2>
@@ -924,15 +4113,30 @@
             <rect x="4" y="4" width="28" height="28" rx="2" />
             <path d="M4 14h28M14 4v28" />
           </svg>
-          <div class="skill-title">Content Strategy</div>
+          <div
+            class="skill-title"
+            data-en="Content Strategy"
+            data-ar="استراتيجية المحتوى"
+          >
+            Content Strategy
+          </div>
           <div class="skill-desc">
             Planning and executing content that drives measurable growth across
             platforms through data and creativity.
           </div>
           <div class="skill-tags">
-            <span class="tag">Content Planning</span>
-            <span class="tag">Editorial Calendars</span>
-            <span class="tag">Analytics</span>
+            <span class="tag" data-en="Content Planning" data-ar="تخطيط المحتوى"
+              >Content Planning</span
+            >
+            <span
+              class="tag"
+              data-en="Editorial Calendars"
+              data-ar="تقاويم التحرير"
+              >Editorial Calendars</span
+            >
+            <span class="tag" data-en="Analytics" data-ar="التحليلات"
+              >Analytics</span
+            >
           </div>
         </div>
         <div class="skill-card reveal reveal-delay-1">
@@ -946,15 +4150,30 @@
             <circle cx="18" cy="18" r="14" />
             <path d="M18 4v28M4 18h28" />
           </svg>
-          <div class="skill-title">Social Media Management</div>
+          <div
+            class="skill-title"
+            data-en="Social Media Management"
+            data-ar="إدارة وسائل التواصل الاجتماعي"
+          >
+            Social Media Management
+          </div>
           <div class="skill-desc">
             Managing Facebook, Instagram, and other platforms end-to-end — from
             strategy to scheduling to community engagement.
           </div>
           <div class="skill-tags">
-            <span class="tag">Meta Business Suite</span>
-            <span class="tag">Instagram</span>
-            <span class="tag">Facebook</span>
+            <span
+              class="tag"
+              data-en="Meta Business Suite"
+              data-ar="ميتا بيزنس سويت"
+              >Meta Business Suite</span
+            >
+            <span class="tag" data-en="Instagram" data-ar="إنستغرام"
+              >Instagram</span
+            >
+            <span class="tag" data-en="Facebook" data-ar="فيسبوك"
+              >Facebook</span
+            >
           </div>
         </div>
         <div class="skill-card reveal reveal-delay-2">
@@ -967,15 +4186,25 @@
           >
             <path d="M8 28L18 8l10 20M12 20h12" />
           </svg>
-          <div class="skill-title">Copywriting</div>
+          <div
+            class="skill-title"
+            data-en="Copywriting"
+            data-ar="كتابة المحتوى الإعلاني"
+          >
+            Copywriting
+          </div>
           <div class="skill-desc">
             Writing in Arabic and English — captions, campaigns, and
             storytelling that connect with real audiences.
           </div>
           <div class="skill-tags">
-            <span class="tag">Arabic</span>
-            <span class="tag">English</span>
-            <span class="tag">Persuasion</span>
+            <span class="tag" data-en="Arabic" data-ar="العربية">Arabic</span>
+            <span class="tag" data-en="English" data-ar="الإنجليزية"
+              >English</span
+            >
+            <span class="tag" data-en="Persuasion" data-ar="الإقناع"
+              >Persuasion</span
+            >
           </div>
         </div>
         <div class="skill-card reveal">
@@ -989,15 +4218,27 @@
             <path d="M6 18l6-6 6 6 6-6 6 6" />
             <circle cx="18" cy="18" r="14" />
           </svg>
-          <div class="skill-title">Digital Storytelling</div>
+          <div
+            class="skill-title"
+            data-en="Digital Storytelling"
+            data-ar="السرد القصصي الرقمي"
+          >
+            Digital Storytelling
+          </div>
           <div class="skill-desc">
             Crafting narratives that simplify the complex — from astronomy to
             HVAC, every topic has a story worth telling.
           </div>
           <div class="skill-tags">
-            <span class="tag">Narrative Design</span>
-            <span class="tag">Science Comm.</span>
-            <span class="tag">Engagement</span>
+            <span class="tag" data-en="Narrative Design" data-ar="تصميم السرد"
+              >Narrative Design</span
+            >
+            <span class="tag" data-en="Science Comm." data-ar="تواصل علمي"
+              >Science Comm.</span
+            >
+            <span class="tag" data-en="Engagement" data-ar="التفاعل"
+              >Engagement</span
+            >
           </div>
         </div>
         <div class="skill-card reveal reveal-delay-1">
@@ -1011,15 +4252,27 @@
             <rect x="4" y="8" width="28" height="20" rx="2" />
             <path d="M14 8V6a2 2 0 014 0v2" />
           </svg>
-          <div class="skill-title">Community Building</div>
+          <div
+            class="skill-title"
+            data-en="Community Building"
+            data-ar="بناء المجتمعات"
+          >
+            Community Building
+          </div>
           <div class="skill-desc">
             Growing and nurturing online communities through consistent value,
             authenticity, and meaningful interaction.
           </div>
           <div class="skill-tags">
-            <span class="tag">Audience Growth</span>
-            <span class="tag">Engagement</span>
-            <span class="tag">Moderation</span>
+            <span class="tag" data-en="Audience Growth" data-ar="نمو الجمهور"
+              >Audience Growth</span
+            >
+            <span class="tag" data-en="Engagement" data-ar="التفاعل"
+              >Engagement</span
+            >
+            <span class="tag" data-en="Moderation" data-ar="الإشراف"
+              >Moderation</span
+            >
           </div>
         </div>
         <div class="skill-card reveal reveal-delay-2">
@@ -1033,15 +4286,27 @@
             <path d="M18 4L4 32h28L18 4z" />
             <path d="M18 14v8M18 26v.5" />
           </svg>
-          <div class="skill-title">Performance Analysis</div>
+          <div
+            class="skill-title"
+            data-en="Performance Analysis"
+            data-ar="تحليل الأداء"
+          >
+            Performance Analysis
+          </div>
           <div class="skill-desc">
             Reading the data — reach, engagement, growth — and translating
             numbers into smarter content decisions.
           </div>
           <div class="skill-tags">
-            <span class="tag">Reach Metrics</span>
-            <span class="tag">Growth Tracking</span>
-            <span class="tag">Optimization</span>
+            <span class="tag" data-en="Reach Metrics" data-ar="مقاييس الوصول"
+              >Reach Metrics</span
+            >
+            <span class="tag" data-en="Growth Tracking" data-ar="تتبع النمو"
+              >Growth Tracking</span
+            >
+            <span class="tag" data-en="Optimization" data-ar="التحسين"
+              >Optimization</span
+            >
           </div>
         </div>
       </div>
@@ -1050,15 +4315,33 @@
     <!-- EXPERIENCE -->
     <section id="experience">
       <div class="exp-header">
-        <p class="section-label reveal">Career</p>
+        <p
+          class="section-label reveal"
+          data-en="Career"
+          data-ar="المسيرة المهنية"
+        >
+          Career
+        </p>
         <h2 class="section-headline reveal reveal-delay-1">EXPERIENCE</h2>
       </div>
       <div class="exp-list">
         <div class="exp-item reveal">
           <div class="exp-date">2025 — Present</div>
           <div>
-            <div class="exp-title">Social Media Specialist</div>
-            <div class="exp-company">Abwaab — Educational Platform</div>
+            <div
+              class="exp-title"
+              data-en="Social Media Specialist"
+              data-ar="متخصص وسائل التواصل الاجتماعي"
+            >
+              Social Media Specialist
+            </div>
+            <div
+              class="exp-company"
+              data-en="Abwaab — Educational Platform"
+              data-ar="أبواب — منصة تعليمية"
+            >
+              Abwaab — Educational Platform
+            </div>
             <div class="exp-desc">
               Managing and executing social media strategies across Facebook and
               Instagram. Creating engaging educational content for students,
@@ -1070,7 +4353,13 @@
         <div class="exp-item reveal">
           <div class="exp-date">2023 · 7 months</div>
           <div>
-            <div class="exp-title">Content Creator</div>
+            <div
+              class="exp-title"
+              data-en="Content Creator"
+              data-ar="صانع محتوى"
+            >
+              Content Creator
+            </div>
             <div class="exp-company">
               Taqeef Company — HVAC / Air Conditioners
             </div>
@@ -1084,8 +4373,20 @@
         <div class="exp-item reveal">
           <div class="exp-date">2020 — Present</div>
           <div>
-            <div class="exp-title">Science Content Creator</div>
-            <div class="exp-company">@spaceiraq — Instagram Community</div>
+            <div
+              class="exp-title"
+              data-en="Science Content Creator"
+              data-ar="صانع محتوى علمي"
+            >
+              Science Content Creator
+            </div>
+            <div
+              class="exp-company"
+              data-en="@spaceiraq — Instagram Community"
+              data-ar="@spaceiraq — مجتمع إنستغرام"
+            >
+              @spaceiraq — Instagram Community
+            </div>
             <div class="exp-desc">
               Created educational content focused on astronomy and space
               science, simplifying complex scientific concepts for a general
@@ -1097,113 +4398,15 @@
       </div>
     </section>
 
-    <!-- PROJECTS -->
-    <section id="projects">
-      <div class="proj-header">
-        <p class="section-label reveal">Selected Work</p>
-        <h2 class="section-headline reveal reveal-delay-1">PROJECTS</h2>
-      </div>
-
-      <div class="proj-featured reveal">
-        <div class="proj-bg-text">ABWAAB</div>
-        <div class="proj-arrow">→</div>
-        <div>
-          <div class="proj-number">01 — Featured</div>
-          <div class="proj-title">Abwaab Educational Campaigns</div>
-          <div class="proj-cats">
-            Social Media <span>·</span> Content Strategy
-            <span>·</span> Education
-          </div>
-        </div>
-      </div>
-
-      <div class="proj-grid">
-        <div class="proj-card reveal">
-          <div class="proj-card-bg">SPACE</div>
-          <div class="proj-arrow">→</div>
-          <div>
-            <div class="proj-number">02</div>
-            <div class="proj-title">@spaceiraq Science Community</div>
-            <div class="proj-cats">
-              Instagram <span>·</span> Astronomy <span>·</span> Education
-            </div>
-          </div>
-        </div>
-        <div class="proj-card reveal reveal-delay-1">
-          <div class="proj-card-bg">TAQEEF</div>
-          <div class="proj-arrow">→</div>
-          <div>
-            <div class="proj-number">03</div>
-            <div class="proj-title">Taqeef Brand Content</div>
-            <div class="proj-cats">
-              Content Creation <span>·</span> Campaigns <span>·</span> Product
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- BLOG / CONTENT -->
-    <section id="blog">
-      <p class="section-label reveal">Thoughts & Content</p>
-      <h2 class="section-headline reveal reveal-delay-1">CONTENT</h2>
-
-      <div class="blog-grid">
-        <div class="blog-card featured reveal">
-          <div class="blog-thumbnail">
-            <span class="blog-thumb-icon">🔭</span>
-          </div>
-          <div class="blog-content">
-            <div class="blog-date">Space Iraq — @spaceiraq</div>
-            <div class="blog-title">
-              Why Arabic Audiences Deserve Better Science Content
-            </div>
-            <div class="blog-excerpt">
-              Breaking down the universe for millions who've never had it
-              explained in their language — and building a community around
-              curiosity.
-            </div>
-          </div>
-        </div>
-        <div class="blog-card reveal reveal-delay-1">
-          <div class="blog-thumbnail">
-            <span class="blog-thumb-icon">📱</span>
-          </div>
-          <div class="blog-content">
-            <div class="blog-date">Content Strategy</div>
-            <div class="blog-title">
-              The Secret to Engagement: Simplify Before You Amplify
-            </div>
-            <div class="blog-excerpt">
-              How taking complex topics and distilling them into one clear idea
-              unlocks far better reach and genuine interaction.
-            </div>
-          </div>
-        </div>
-        <div class="blog-card reveal reveal-delay-2">
-          <div class="blog-thumbnail">
-            <span class="blog-thumb-icon">🎯</span>
-          </div>
-          <div class="blog-content">
-            <div class="blog-date">Education Tech</div>
-            <div class="blog-title">
-              Content That Teaches: Lessons from EdTech Social Media
-            </div>
-            <div class="blog-excerpt">
-              What working at an educational platform taught me about writing
-              content students actually want to read — and share.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- CONTACT -->
     <section id="contact">
-      <p class="contact-label reveal">Say Hello</p>
+      <p class="contact-label reveal" data-en="Say Hello" data-ar="قل مرحباً">
+        Say Hello
+      </p>
       <h2 class="contact-headline reveal reveal-delay-1">
-        LET'S CREATE<br />SOMETHING
-        <em>Remarkable</em>
+        <span data-en="LET'S CREATE" data-ar="لنصنع">LET'S CREATE</span
+        ><br /><span data-en="SOMETHING" data-ar="شيئاً">SOMETHING</span>
+        <em data-en="Remarkable" data-ar="رائعاً">Remarkable</em>
       </h2>
       <p class="contact-sub reveal reveal-delay-2">
         Have a project in mind? I'm open to freelance work, collaborations, and
@@ -1231,8 +4434,16 @@
     </section>
 
     <footer>
-      <span>© 2026 Karrar Mohammed — All rights reserved.</span>
-      <span>Baghdad, Iraq · Designed with intention.</span>
+      <span
+        data-en="© 2026 Karrar Mohammed — All rights reserved."
+        data-ar="© 2026 كرار محمد — جميع الحقوق محفوظة."
+        >© 2026 Karrar Mohammed — All rights reserved.</span
+      >
+      <span
+        data-en="Baghdad, Iraq · Designed with intention."
+        data-ar="بغداد، العراق · مصمم بنية وهدف."
+        >Baghdad, Iraq · Designed with intention.</span
+      >
     </footer>
 
     <script>
@@ -1294,10 +4505,713 @@
       );
       reveals.forEach((r) => observer.observe(r));
 
-      // Hero auto-reveal
+      // ===== BILINGUAL SWITCHER =====
+      const translations = {
+        en: {
+          pageTitle:
+            "Karrar Mohammed — Social Media Specialist & Content Creator",
+          heroName: "KARRAR",
+          heroItalic: "Mohammed",
+          heroDesc: "Social Media Specialist crafting bold digital stories...",
+          aboutHeadline: "CONTENT IS<br /><em>connection</em><br />MADE REAL.",
+          aboutP1:
+            "I'm <strong>Karrar Mohammed</strong>, a Social Media Specialist and Content Creator based in Baghdad, Iraq — passionate about transforming complex ideas into simple, compelling stories that move people.",
+          aboutP2:
+            "From space science to brand campaigns, I've spent years building communities and crafting content that educates, engages, and converts. I believe great content isn't just posts — it's strategy, empathy, and intention.",
+          skillsHeadline: "SKILLS &<br />EXPERTISE",
+          skillsDesc1:
+            "Planning and executing content that drives measurable growth across platforms through data and creativity.",
+          skillsDesc2:
+            "Managing Facebook, Instagram, and other platforms end-to-end — from strategy to scheduling to community engagement.",
+          skillsDesc3:
+            "Writing in Arabic and English — captions, campaigns, and storytelling that connect with real audiences.",
+          skillsDesc4:
+            "Crafting narratives that simplify the complex — from astronomy to HVAC, every topic has a story worth telling.",
+          skillsDesc5:
+            "Growing and nurturing online communities through consistent value, authenticity, and meaningful interaction.",
+          skillsDesc6:
+            "Reading the data — reach, engagement, growth — and translating numbers into smarter content decisions.",
+          expHeadline: "EXPERIENCE",
+          expCompany2: "Taqeef Company — HVAC / Air Conditioners",
+          expDesc1:
+            "Managing and executing social media strategies across Facebook and Instagram. Creating engaging educational content for students, driving growth through creative campaigns, and collaborating with marketing teams to maintain consistent brand messaging.",
+          expDesc2:
+            "Produced promotional and educational content for HVAC products. Supported marketing campaigns and delivered clear, structured content to improve customer understanding of technical products.",
+          expDesc3:
+            "Created educational content focused on astronomy and space science, simplifying complex scientific concepts for a general Arabic-speaking audience. Built and managed a growing science-focused online community from the ground up.",
+          projHeadline: "PROJECTS",
+          projCats1:
+            "Social Media <span>·</span> Content Strategy <span>·</span> Education",
+          projCats2:
+            "Instagram <span>·</span> Astronomy <span>·</span> Education",
+          projCats3:
+            "Content Creation <span>·</span> Campaigns <span>·</span> Product",
+          blogHeadline: "CONTENT",
+          blogTitle1: "Why Arabic Audiences Deserve Better Science Content",
+          blogExcerpt1:
+            "Breaking down the universe for millions who've never had it explained in their language — and building a community around curiosity.",
+          blogTitle2: "The Secret to Engagement: Simplify Before You Amplify",
+          blogExcerpt2:
+            "How taking complex topics and distilling them into one clear idea unlocks far better reach and genuine interaction.",
+          blogTitle3: "Content That Teaches: Lessons from EdTech Social Media",
+          blogExcerpt3:
+            "What working at an educational platform taught me about writing content students actually want to read — and share.",
+          contactHeadline: "LET'S CREATE<br />SOMETHING<em>Remarkable</em>",
+          contactSub:
+            "Have a project in mind? I'm open to freelance work, collaborations, and full-time opportunities. Let's talk.",
+        },
+        ar: {
+          pageTitle: "كرار محمد — متخصص وسائل التواصل الاجتماعي وصانع محتوى",
+          heroName: "كــــرار",
+          heroItalic: "محمــــــــد",
+          heroDesc:
+            "متخصص في وسائل التواصل الاجتماعي يصنع قصصاً رقمية جريئة...",
+          aboutHeadline: "المحتوى هو<br /><em>تواصل</em><br />يصبح حقيقياً.",
+          aboutP1:
+            "أنا <strong>كرار محمد</strong>، متخصص في وسائل التواصل الاجتماعي وصانع محتوى مقيم في بغداد، العراق — شغوف بتحويل الأفكار المعقدة إلى قصص بسيطة ومقنعة تحرك الناس.",
+          aboutP2:
+            "من علوم الفضاء إلى حملات العلامات التجارية، أمضيت سنوات في بناء المجتمعات وصناعة المحتوى الذي يُعلّم ويُشرك ويحوّل. أؤمن بأن المحتوى الرائع ليس مجرد منشورات — بل هو استراتيجية وتعاطف ونية.",
+          skillsHeadline: "المهارات<br />والخبرات",
+          skillsDesc1:
+            "تخطيط وتنفيذ محتوى يحقق نمواً قابلاً للقياس عبر المنصات من خلال البيانات والإبداع.",
+          skillsDesc2:
+            "إدارة فيسبوك وإنستغرام وغيرها من المنصات بشكل متكامل — من الاستراتيجية إلى الجدولة إلى تفاعل المجتمع.",
+          skillsDesc3:
+            "الكتابة بالعربية والإنجليزية — تعليقات وحملات وقصص تتواصل مع الجماهير الحقيقية.",
+          skillsDesc4:
+            "صياغة روايات تبسّط المعقد — من علم الفلك إلى أنظمة التكييف، كل موضوع له قصة تستحق الحكي.",
+          skillsDesc5:
+            "تنمية ورعاية المجتمعات الإلكترونية من خلال القيمة المستمرة والأصالة والتفاعل الهادف.",
+          skillsDesc6:
+            "قراءة البيانات — الوصول والتفاعل والنمو — وترجمة الأرقام إلى قرارات محتوى أذكى.",
+          expHeadline: "الخبرة",
+          expCompany2: "شركة تكييف — أنظمة التبريد والتكييف",
+          expDesc1:
+            "إدارة وتنفيذ استراتيجيات وسائل التواصل الاجتماعي عبر فيسبوك وإنستغرام. إنشاء محتوى تعليمي جذاب للطلاب وتحقيق النمو من خلال حملات إبداعية والتعاون مع فرق التسويق للحفاظ على رسائل متسقة للعلامة التجارية.",
+          expDesc2:
+            "إنتاج محتوى ترويجي وتعليمي لمنتجات التكييف. دعم الحملات التسويقية وتقديم محتوى واضح ومنظم لتحسين فهم العملاء للمنتجات التقنية.",
+          expDesc3:
+            "إنشاء محتوى تعليمي يركز على علم الفلك وعلوم الفضاء، وتبسيط المفاهيم العلمية المعقدة للجمهور العربي العام. بناء وإدارة مجتمع علمي إلكتروني متنامٍ من الصفر.",
+          projHeadline: "المشاريع",
+          projCats1:
+            "وسائل التواصل <span>·</span> استراتيجية المحتوى <span>·</span> تعليم",
+          projCats2: "إنستغرام <span>·</span> فلك <span>·</span> تعليم",
+          projCats3: "صناعة المحتوى <span>·</span> حملات <span>·</span> منتج",
+          blogHeadline: "المحتوى",
+          blogTitle1: "لماذا يستحق الجمهور العربي محتوى علمياً أفضل",
+          blogExcerpt1:
+            "شرح الكون لملايين لم يحظوا قط بتفسير بلغتهم — وبناء مجتمع حول فضول المعرفة.",
+          blogTitle2: "سر التفاعل: بسّط قبل أن تضخّم",
+          blogExcerpt2:
+            "كيف يفتح أخذ الموضوعات المعقدة وتقطيرها في فكرة واحدة واضحة آفاقاً أوسع للوصول والتفاعل الحقيقي.",
+          blogTitle3:
+            "المحتوى الذي يُعلّم: دروس من وسائل التواصل في تقنية التعليم",
+          blogExcerpt3:
+            "ما علّمني إياه العمل في منصة تعليمية عن كتابة محتوى يريد الطلاب فعلاً قراءته — ومشاركته.",
+          contactHeadline: "لنصنع<br />شيئاً<em>رائعاً</em>",
+          contactSub:
+            "هل لديك مشروع في ذهنك؟ أنا منفتح على العمل الحر والتعاون والفرص بدوام كامل. لنتحدث.",
+        },
+      };
+
+      function setLang(lang) {
+        const isAr = lang === "ar";
+        const t = translations[lang];
+        const html = document.documentElement;
+
+        // Direction & lang attribute
+        html.setAttribute("dir", isAr ? "rtl" : "ltr");
+        html.setAttribute("lang", lang);
+
+        // Flip hero image and move side — instant, no animation
+        const heroImg = document.getElementById("heroImg");
+        const heroWrap = document.getElementById("heroImgWrap");
+        if (heroImg)
+          heroImg.style.transform = isAr ? "scaleX(-1)" : "scaleX(1)";
+        if (heroWrap) {
+          if (isAr) {
+            heroWrap.style.right = "auto";
+            heroWrap.style.left = "5%";
+          } else {
+            heroWrap.style.left = "auto";
+            heroWrap.style.right = "5%";
+          }
+        }
+
+        // Switch body font
+        document.body.style.fontFamily = isAr
+          ? '"Tajawal", sans-serif'
+          : '"DM Sans", sans-serif';
+
+        // Toggle buttons
+        document.getElementById("btnEn").classList.toggle("active", !isAr);
+        document.getElementById("btnAr").classList.toggle("active", isAr);
+
+        // Page title
+        document.title = t.pageTitle;
+
+        // Swap all simple data-en / data-ar elements (no child elements)
+        document.querySelectorAll("[data-en]").forEach((el) => {
+          if (el.children.length === 0) {
+            const val = el.getAttribute("data-" + lang);
+            if (val) el.textContent = val;
+          }
+        });
+
+        // Hero name
+        document.querySelector(".hero-name").textContent = t.heroName;
+        document.querySelector(".hero-name-italic").textContent = t.heroItalic;
+        document.querySelector(".hero-desc").textContent = t.heroDesc;
+        // Hero badge
+        var badge = document.querySelector(".hero-badge span[data-en]");
+        if (badge)
+          badge.textContent = isAr
+            ? t.heroDesc.split("—")[0] || badge.getAttribute("data-ar")
+            : badge.getAttribute("data-en");
+
+        // About headline (has em tag)
+        document.querySelector("#about .section-headline").innerHTML =
+          t.aboutHeadline;
+
+        // About text paragraphs
+        const aboutPs = document.querySelectorAll(".about-text p");
+        if (aboutPs[0]) aboutPs[0].innerHTML = t.aboutP1;
+        if (aboutPs[1]) aboutPs[1].innerHTML = t.aboutP2;
+
+        // Skills headline
+        document.querySelector("#skills .section-headline").innerHTML =
+          t.skillsHeadline;
+
+        // Skill descriptions
+        const skillDescs = document.querySelectorAll(".skill-desc");
+        const descKeys = [
+          "skillsDesc1",
+          "skillsDesc2",
+          "skillsDesc3",
+          "skillsDesc4",
+          "skillsDesc5",
+          "skillsDesc6",
+        ];
+        skillDescs.forEach((el, i) => {
+          if (descKeys[i]) el.textContent = t[descKeys[i]];
+        });
+
+        // Experience headline
+        document.querySelector("#experience .section-headline").textContent =
+          t.expHeadline;
+
+        // Experience company 2 (has inner HTML)
+        const expCompanies = document.querySelectorAll(".exp-company");
+        if (expCompanies[1]) expCompanies[1].textContent = t.expCompany2;
+
+        // Experience descriptions
+        const expDescs = document.querySelectorAll(".exp-desc");
+        if (expDescs[0]) expDescs[0].textContent = t.expDesc1;
+        if (expDescs[1]) expDescs[1].textContent = t.expDesc2;
+        if (expDescs[2]) expDescs[2].textContent = t.expDesc3;
+
+        // Projects headline
+        document.querySelector("#projects .section-headline").textContent =
+          t.projHeadline;
+
+        // Project cats
+        const projCats = document.querySelectorAll(".proj-cats");
+        if (projCats[0]) projCats[0].innerHTML = t.projCats1;
+        if (projCats[1]) projCats[1].innerHTML = t.projCats2;
+        if (projCats[2]) projCats[2].innerHTML = t.projCats3;
+
+        // Contact headline — handled by data-en/ar spans above
+        document.querySelector(".contact-sub").textContent = t.contactSub;
+
+        // Tab buttons translation
+        document.querySelectorAll(".tab-btn").forEach((btn) => {
+          const val = btn.getAttribute("data-" + lang);
+          if (val) btn.textContent = val;
+        });
+      }
+      // Tab switcher
+
+      // Hero auto-reveal (non-hero sections)
       document.querySelectorAll("#hero .reveal").forEach((el, i) => {
         setTimeout(() => el.classList.add("visible"), 200 + i * 150);
       });
+
+      // ── Space: Stars + Shooting Stars ──
+      (function () {
+        var canvas = document.getElementById("heroCanvas");
+        if (!canvas) return;
+        var ctx = canvas.getContext("2d");
+        var W,
+          H,
+          stars = [],
+          shooters = [];
+
+        function resize() {
+          var hero = document.getElementById("hero");
+          W = canvas.width = hero.offsetWidth;
+          H = canvas.height = hero.offsetHeight;
+          buildStars();
+        }
+
+        function rand(min, max) {
+          return Math.random() * (max - min) + min;
+        }
+
+        // ── Static star field ──
+        function buildStars() {
+          stars = [];
+          var count = Math.floor((W * H) / 3500);
+          for (var i = 0; i < count; i++) {
+            stars.push({
+              x: rand(0, W),
+              y: rand(0, H),
+              r: rand(0.2, 1.5),
+              baseAlpha: rand(0.6, 1),
+              alpha: 0,
+              twinkleSpeed: rand(0.004, 0.022),
+              twinkleOffset: rand(0, Math.PI * 2),
+              sharp: Math.random() < 0.4,
+              hue: Math.random() < 0.15 ? (Math.random() < 0.5 ? 220 : 290) : 0,
+            });
+          }
+        }
+
+        // ── Shooting star factory ──
+        function spawnShooter() {
+          var angle = (rand(-35, -15) * Math.PI) / 180; // slight downward diagonal
+          var speed = rand(6, 14);
+          var len = rand(80, 220);
+          shooters.push({
+            x: rand(0, W),
+            y: rand(0, H * 0.5),
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            len: len,
+            alpha: 0,
+            fadeIn: true,
+            life: 0,
+            maxLife: Math.floor(len / speed) + 12,
+          });
+        }
+
+        // Schedule shooting stars at random intervals
+        function scheduleShooter() {
+          spawnShooter();
+          setTimeout(scheduleShooter, rand(1800, 4500));
+        }
+        setTimeout(scheduleShooter, 800);
+
+        var t = 0;
+        function draw() {
+          ctx.clearRect(0, 0, W, H);
+          t += 0.016;
+
+          // Draw stars
+          stars.forEach(function (s) {
+            // Full on/off: sin goes -1→1, remap to 0→1, then apply threshold for sharp blink
+            var raw = Math.sin(t * s.twinkleSpeed * 60 + s.twinkleOffset);
+            // Each star has its own blink style: some smooth, some sharp
+            var alpha;
+            if (s.sharp) {
+              // sharp: mostly off, briefly on
+              alpha =
+                raw > 0.6
+                  ? s.baseAlpha
+                  : raw > 0.2
+                    ? s.baseAlpha * ((raw - 0.2) / 0.4)
+                    : 0;
+            } else {
+              // smooth: graceful fade in/out between 0 and baseAlpha
+              alpha = s.baseAlpha * Math.max(0, raw);
+            }
+            if (alpha <= 0) return;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            if (s.hue === 0) {
+              ctx.fillStyle = "rgba(255,255,255," + alpha + ")";
+            } else {
+              ctx.fillStyle = "hsla(" + s.hue + ",70%,90%," + alpha + ")";
+            }
+            ctx.fill();
+          });
+
+          // Draw shooting stars
+          for (var i = shooters.length - 1; i >= 0; i--) {
+            var s = shooters[i];
+            s.x += s.vx;
+            s.y += s.vy;
+            s.life++;
+
+            // Fade in then out
+            if (s.fadeIn) {
+              s.alpha = Math.min(s.alpha + 0.12, 1);
+              if (s.alpha >= 1) s.fadeIn = false;
+            }
+            if (s.life > s.maxLife - 10) {
+              s.alpha = Math.max(s.alpha - 0.12, 0);
+            }
+
+            if (
+              s.life > s.maxLife ||
+              s.x < -200 ||
+              s.x > W + 200 ||
+              s.y > H + 100
+            ) {
+              shooters.splice(i, 1);
+              continue;
+            }
+
+            // Trail gradient
+            var tailX = s.x - s.vx * (s.len / Math.hypot(s.vx, s.vy));
+            var tailY = s.y - s.vy * (s.len / Math.hypot(s.vx, s.vy));
+            var grad = ctx.createLinearGradient(tailX, tailY, s.x, s.y);
+            grad.addColorStop(0, "rgba(255,255,255,0)");
+            grad.addColorStop(0.6, "rgba(200,180,255," + s.alpha * 0.35 + ")");
+            grad.addColorStop(1, "rgba(255,255,255," + s.alpha + ")");
+
+            ctx.beginPath();
+            ctx.moveTo(tailX, tailY);
+            ctx.lineTo(s.x, s.y);
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // Bright head dot
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, 1.8, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(255,255,255," + s.alpha + ")";
+            ctx.fill();
+          }
+
+          requestAnimationFrame(draw);
+        }
+
+        resize();
+        window.addEventListener("resize", resize, { passive: true });
+        draw();
+      })();
+
+      // ── Parallax: hero image drifts slightly on scroll ──
+      window.addEventListener(
+        "scroll",
+        function () {
+          var wrap = document.getElementById("heroImgWrap");
+          if (!wrap) return;
+          wrap.style.transform =
+            "translateY(calc(-50% + " + window.scrollY * 0.14 + "px))";
+        },
+        { passive: true },
+      );
+
+      // ===== GFX CARD SLIDER =====
+      // State: current slide index per slider
+      // ===== NEW WORKS — TABS / FILTER / CAROUSELS / LIGHTBOX =====
+      (function () {
+        const tabBtns = document.querySelectorAll(".works-tabs .tab-btn");
+        const tabBg = document.getElementById("tab-bg");
+        const workCards = document.querySelectorAll("#works-grid .work-card");
+
+        function moveTabBg(target) {
+          if (!tabBg || !target) return;
+          const rect = target.getBoundingClientRect();
+          const parentRect = target.parentElement.getBoundingClientRect();
+          tabBg.style.left =
+            rect.left -
+            parentRect.left +
+            target.parentElement.scrollLeft +
+            "px";
+          tabBg.style.width = rect.width + "px";
+        }
+        // Initial position once layout settles
+        setTimeout(() => {
+          const activeBtn = document.querySelector(
+            ".works-tabs .tab-btn.active",
+          );
+          if (activeBtn) moveTabBg(activeBtn);
+        }, 100);
+        window.addEventListener("resize", () => {
+          const activeBtn = document.querySelector(
+            ".works-tabs .tab-btn.active",
+          );
+          if (activeBtn) moveTabBg(activeBtn);
+        });
+
+        tabBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            tabBtns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            moveTabBg(btn);
+
+            const filter = btn.dataset.filter;
+            const FADE_MS = 300;
+            workCards.forEach((card) => {
+              const matches = filter === "all" || card.dataset.cat === filter;
+              card.classList.remove("filtering-in");
+              if (!matches && !card.classList.contains("hidden")) {
+                card.classList.add("filtering-out");
+              }
+            });
+            setTimeout(() => {
+              workCards.forEach((card) => {
+                const matches = filter === "all" || card.dataset.cat === filter;
+                if (matches) {
+                  const wasHidden = card.classList.contains("hidden");
+                  card.classList.remove("hidden", "filtering-out");
+                  if (wasHidden) {
+                    card.classList.remove("filtering-in");
+                    void card.offsetWidth;
+                    card.classList.add("filtering-in");
+                  }
+                } else {
+                  card.classList.add("hidden");
+                  card.classList.remove("filtering-out");
+                }
+              });
+            }, FADE_MS);
+          });
+        });
+
+        // ===== LIGHTBOX =====
+        const lightbox = document.getElementById("lightbox");
+        const lightboxTrack = document.getElementById("lightbox-track");
+        const lightboxCur = document.getElementById("lightbox-cur");
+        const lightboxTotal = document.getElementById("lightbox-total");
+        const lightboxClose = document.getElementById("lightbox-close");
+        const lightboxPrev = document.getElementById("lightbox-prev");
+        const lightboxNext = document.getElementById("lightbox-next");
+
+        let lbImages = [];
+        let lbIndex = 0;
+        const pad = (n) => String(n).padStart(2, "0");
+
+        function lbUpdate() {
+          lightboxTrack.style.transform = "translateX(-" + lbIndex * 100 + "%)";
+          lightboxCur.textContent = pad(lbIndex + 1);
+        }
+        function openLightbox(images, startIndex) {
+          lbImages = images;
+          lbIndex = startIndex || 0;
+          lightboxTrack.innerHTML = "";
+          images.forEach((src) => {
+            const slide = document.createElement("div");
+            const img = document.createElement("img");
+            img.src = src;
+            img.draggable = false;
+            img.alt = "";
+            slide.appendChild(img);
+            lightboxTrack.appendChild(slide);
+          });
+          lightboxTotal.textContent = pad(images.length);
+          lbUpdate();
+          lightbox.classList.add("open");
+          lightbox.setAttribute("aria-hidden", "false");
+          document.body.style.overflow = "hidden";
+        }
+        function closeLightbox() {
+          lightbox.classList.remove("open");
+          lightbox.setAttribute("aria-hidden", "true");
+          document.body.style.overflow = "";
+        }
+        function lbGo(dir) {
+          if (!lbImages.length) return;
+          lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
+          lbUpdate();
+        }
+        lightboxClose.addEventListener("click", closeLightbox);
+        lightboxPrev.addEventListener("click", () => lbGo(-1));
+        lightboxNext.addEventListener("click", () => lbGo(1));
+        lightbox.addEventListener("click", (e) => {
+          if (e.target === lightbox) closeLightbox();
+        });
+        document.addEventListener("keydown", (e) => {
+          if (!lightbox.classList.contains("open")) return;
+          if (e.key === "Escape") closeLightbox();
+          if (e.key === "ArrowLeft") lbGo(-1);
+          if (e.key === "ArrowRight") lbGo(1);
+        });
+        // Touch swipe inside lightbox
+        let lbStartX = 0,
+          lbIsDown = false;
+        lightboxTrack.addEventListener(
+          "touchstart",
+          (e) => {
+            lbStartX = e.touches[0].clientX;
+            lbIsDown = true;
+          },
+          { passive: true },
+        );
+        lightboxTrack.addEventListener("touchend", (e) => {
+          if (!lbIsDown) return;
+          const dx = e.changedTouches[0].clientX - lbStartX;
+          if (Math.abs(dx) > 40) lbGo(dx < 0 ? 1 : -1);
+          lbIsDown = false;
+        });
+
+        // ===== SOCIAL CARD CAROUSELS =====
+        document.querySelectorAll(".social-card").forEach((card) => {
+          const track = card.querySelector(".social-track");
+          const slides = card.querySelectorAll(".social-slide");
+          const dotsContainer = card.querySelector(".social-dots");
+          const prevBtn = card.querySelector(".social-arrow.prev");
+          const nextBtn = card.querySelector(".social-arrow.next");
+          const counter = card.querySelector(".social-counter");
+          const total = slides.length;
+          let current = 0;
+
+          let dots = [];
+          if (dotsContainer) {
+            dots = dotsContainer.querySelectorAll(".social-dot");
+          }
+          const images = Array.from(slides).map(
+            (s) => s.querySelector("img").src,
+          );
+
+          function update() {
+            track.style.transform = "translateX(-" + current * 100 + "%)";
+            dots.forEach((d, i) => d.classList.toggle("active", i === current));
+            if (counter) {
+              const curEl =
+                counter.querySelector("span.cur") ||
+                counter.querySelector("span");
+              if (curEl) curEl.textContent = pad(current + 1);
+            }
+          }
+          function go(dir) {
+            current = (current + dir + total) % total;
+            update();
+          }
+
+          // Auto-advance
+          const AUTO_MS = 5500;
+          let autoTimer = null,
+            isHovering = false,
+            isDragging = false;
+          function tick() {
+            if (
+              document.hidden ||
+              isHovering ||
+              isDragging ||
+              lightbox.classList.contains("open")
+            )
+              return;
+            go(1);
+          }
+          function startAuto() {
+            if (autoTimer || total <= 1) return;
+            autoTimer = setInterval(tick, AUTO_MS);
+          }
+          function stopAuto() {
+            if (autoTimer) {
+              clearInterval(autoTimer);
+              autoTimer = null;
+            }
+          }
+          function resetAuto() {
+            stopAuto();
+            startAuto();
+          }
+
+          card.addEventListener("mouseenter", () => {
+            isHovering = true;
+          });
+          card.addEventListener("mouseleave", () => {
+            isHovering = false;
+          });
+
+          prevBtn?.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            go(-1);
+            resetAuto();
+          });
+          nextBtn?.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            go(1);
+            resetAuto();
+          });
+          dots.forEach((dot, i) => {
+            dot.addEventListener("click", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              current = i;
+              update();
+              resetAuto();
+            });
+          });
+
+          // Touch / mouse swipe for card carousel
+          let startX = 0,
+            isDown = false,
+            didDrag = false;
+          const visual = card.querySelector(".work-visual");
+          visual.addEventListener(
+            "touchstart",
+            (e) => {
+              startX = e.touches[0].clientX;
+              isDown = true;
+              didDrag = false;
+              isDragging = true;
+            },
+            { passive: true },
+          );
+          visual.addEventListener(
+            "touchmove",
+            (e) => {
+              if (!isDown) return;
+              if (Math.abs(e.touches[0].clientX - startX) > 10) didDrag = true;
+            },
+            { passive: true },
+          );
+          visual.addEventListener("touchend", (e) => {
+            if (!isDown) return;
+            const dx = e.changedTouches[0].clientX - startX;
+            if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+            isDown = false;
+            isDragging = false;
+            resetAuto();
+          });
+          visual.addEventListener("mousedown", (e) => {
+            startX = e.clientX;
+            isDown = true;
+            didDrag = false;
+            isDragging = true;
+          });
+          visual.addEventListener("mousemove", (e) => {
+            if (!isDown) return;
+            if (Math.abs(e.clientX - startX) > 10) didDrag = true;
+          });
+          visual.addEventListener("mouseup", (e) => {
+            if (!isDown) return;
+            const dx = e.clientX - startX;
+            if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+            isDown = false;
+            isDragging = false;
+            resetAuto();
+          });
+          visual.addEventListener("mouseleave", () => {
+            if (isDown) isDragging = false;
+            isDown = false;
+          });
+
+          startAuto();
+
+          // Click card → lightbox
+          card.addEventListener("click", (e) => {
+            if (didDrag) {
+              didDrag = false;
+              return;
+            }
+            openLightbox(images, current);
+          });
+          card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openLightbox(images, current);
+            }
+          });
+        });
+      })();
     </script>
   </body>
 </html>
